@@ -1,2 +1,3 @@
 # ignore secret keys
 music_controller/secrets.py
+frontend/node_modules
