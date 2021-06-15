@@ -1,0 +1,2 @@
+# ignore secret keys
+music_controller/secrets.py
