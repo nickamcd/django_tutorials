@@ -25,10 +25,16 @@ function App() {
   }
 
   // Add tasks
-  const addTask = (task) => {
-    const id = Math.floor(Math.random() * 10000) + 1
-    const newTask = { id, ...task}
-    setTasks([...tasks, newTask])
+  const addTask = async (task) => {
+    const response = await fetch('http://localhost:8000/api/todos/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task)
+    })
+
+    const data = await response.json()
+
+    setTasks([...tasks, data])
   }
 
   // Delete Task
