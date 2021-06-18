@@ -1,36 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import TaskList from './components/TaskList'
 import AddTask from './components/AddTask'
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false)
-  const [tasks, setTasks] = useState([
-    {
-      "id": 1,
-      "title": "Task one",
-      "description": "description one",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "title": "task two updated",
-      "description": "description two updated",
-      "completed": false
-    },
-    {
-      "id": 3,
-      "title": "task three",
-      "description": "description three",
-      "completed": false
-    },
-    {
-      "id": 4,
-      "title": "task four",
-      "description": "description four",
-      "completed": false
+  const [tasks, setTasks] = useState([])
+
+  useEffect(() => {
+    const getTaskList = async () => {
+      const tasksFromServer = await fetchTaskList()
+      setTasks(tasksFromServer)
     }
-  ])
+
+    getTaskList()
+  }, [])
+
+  const fetchTaskList = async () => {
+    const response = await fetch('http://localhost:8000/api/todos/')
+    const data = await response.json()
+
+    console.log(data)
+    return data
+  }
+
 
   // Add tasks
   const addTask = (task) => {
@@ -59,7 +52,7 @@ function App() {
           'No tasks'
       )} 
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
