@@ -16,14 +16,13 @@ function App() {
     getTaskList()
   }, [])
 
+  // fetch tasks from backend
   const fetchTaskList = async () => {
     const response = await fetch('http://localhost:8000/api/todos/')
     const data = await response.json()
 
-    console.log(data)
     return data
   }
-
 
   // Add tasks
   const addTask = (task) => {
@@ -33,7 +32,9 @@ function App() {
   }
 
   // Delete Task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:8000/api/todos/${id}/`, { method: 'DELETE' })
+
     setTasks(tasks.filter((task) => task.id !== id ))
   }
 
