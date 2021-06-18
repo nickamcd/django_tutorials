@@ -24,6 +24,14 @@ function App() {
     return data
   }
 
+  // fetch task
+  const fetchTask = async (id) => {
+    const response = await fetch(`http://localhost:8000/api/todos/${id}/`)
+    const data = await response.json()
+
+    return data
+  }
+
   // Add tasks
   const addTask = async (task) => {
     const response = await fetch('http://localhost:8000/api/todos/', {
@@ -45,8 +53,19 @@ function App() {
   }
 
   // Toggle Complete
-  const toggleReminder = (id) => {
-    setTasks(tasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task))
+  const toggleReminder = async (id) => {
+    const taskToToggle = await fetchTask(id)
+    const updatedTask = {...taskToToggle, completed: !taskToToggle.completed }
+
+    const response = await fetch(`http://localhost:8000/api/todos/${id}/`, { 
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTask)
+    })
+
+    const data = await response.json()
+
+    setTasks(tasks.map((task) => task.id === id ? { ...task, completed: data.completed } : task))
   }
 
   return (
